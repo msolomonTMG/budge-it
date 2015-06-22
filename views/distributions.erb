@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"/>
+</head>
+<% if @deleted == "true" %>
+<body onload="Materialize.toast('<span>Distribution Deleted</span><a class=&quot;btn-flat yellow-text&quot; href=&quot;#!&quot;>Undo<a>', 5000)">
+<% else %>
+<body>
+<% end %>
+  <div class="navbar-fixed">
+	<nav class="light-blue lighten-1" role="navigation">
+	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Hacker News</a>
+	  <ul class="right hide-on-med-and-down">
+	    <li><a href="#">Navbar Link</a></li>
+	  </ul>
+
+	  <ul id="nav-mobile" class="side-nav">
+	    <li><a href="#">Navbar Link</a></li>
+	  </ul>
+	  <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+	</div>
+	</nav>
+  </div>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Hacker News</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+      </div>
+      <div class="row center">
+        <a href="/envelope/create" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <form id="create_distribution_form" action="/distribution/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <select name="distribution[account]">
+                  <option value="" selected>Select an Account</option>
+                  <% @accounts.each do |account| %>
+                  <option value="<%= account["id"] %>"><%= account["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Account</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="distribution[envelope]">
+                  <option value="" selected>Select an Envelope</option>
+                  <% @envelopes.each do |envelope| %>
+                  <option value="<%= envelope["id"] %>"><%= envelope["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Envelope</label>
+              </div>
+              <div class="input-field col s4">
+                <input name="distribution[amount]" id="distribution_amount" type="text" class="validate">
+                <label for="distribution[amount]">Amount</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_distribution_submit" class="waves-effect waves-light btn">Create Distribution</a>
+          <script>
+            document.getElementById('create_distribution_submit').onclick = function() {
+              document.getElementById('create_distribution_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/distributions">Distributions</a></h3>
+          <form id="create_distribution_form" action="/distribution/create" method="POST" class="col s12">
+            <table id="distributionTable">
+              <tbody>
+                <th>Account</th>
+                <th>Envelope</th>
+                <th>Amount</th>
+                <th>Action</th>
+                <% @distributions.each do |distribution| %>
+                <tr>
+                  <td><%= distribution.account["name"] %></td>
+                  <td><%= distribution.envelope["name"] %></td>
+                  <td><%= distribution.amount %></td>
+                  <td><a class="waves-effect waves-light btn"><i class="mdi-editor-mode-edit"></i></a> <a class="modal-trigger waves-effect waves-light btn red" href="#delete_distribution<%= distribution['id'] %>"  ><i class="mdi-action-delete"></i></a> </td>
+                  <!-- Modal Trigger -->
+
+                  <!-- Modal Structure -->
+                  <div id="delete_distribution<%= distribution['id'] %>" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                      <h4>Delete Distribution</h4>
+                      <p>You will delete the distribution of $<%= distribution.amount %> from <%= distribution.account["name"] %> to <%= distribution.envelope["name"] %></p>
+                    </div>
+                    <div class="modal-footer">
+                      <form id="delete_distribution<%= distribution['id'] %>_form" action="/distribution/delete" method="POST" class="col s12">
+                        <input name="distribution[id]" id="distribution<%= distribution['id'] %>" type="hidden" class="validate" value="<%= distribution["id"] %>">
+                      </form>
+                      <a id="delete_distribution<%= distribution['id'] %>_submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+                      <script>
+                        document.getElementById('delete_distribution<%= distribution["id"] %>_submit').onclick = function() {
+                          document.getElementById('delete_distribution<%= distribution["id"] %>_form').submit();
+                        }
+                      </script>
+                    </div>
+                  </div>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </form>
+          <a class="btn-floating" id="addRow"><i class="mdi-content-add"></i></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <a id="update_distributions_submit" class="waves-effect waves-light btn">Update Distributions</a>
+          <script>
+            document.getElementById('update_distributions_submit').onclick = function() {
+              document.getElementById('update_distributions_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <br><br>
+
+    <div class="section">
+
+    </div>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+  <script src="js/init.js"></script>
+  <script>
+    //Initialize the modals
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      $('.modal-trigger').leanModal();
+      
+      $('.datepicker').pickadate({
+        selectMonths: false, // Creates a dropdown to control month
+        selectYears: 1 // Creates a dropdown of 15 years to control year
+      });
+      
+      $('#switch').change(function() {
+        $('.occupied').toggle('slow');
+      });
+      $('.collapsible').collapsible({
+        accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+      $('select').material_select();
+
+      $('.tooltipped').tooltip({delay: 50});
+
+      $('#table_id').DataTable();
+      $('#addRow').click(function() {
+        $('#distributionTable  > tbody:last-child').append('<tr><td>Test</td><td>Cell</td><td>Is New</td></tr>');
+      });
+    });
+  </script>
+  </body>
+</html>

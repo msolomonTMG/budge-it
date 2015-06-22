@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"/>
+</head>
+<body>
+  <div class="navbar-fixed">
+  <nav class="light-blue lighten-1" role="navigation">
+  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Hacker News</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="#">Navbar Link</a></li>
+    </ul>
+
+    <ul id="nav-mobile" class="side-nav">
+      <li><a href="#">Navbar Link</a></li>
+    </ul>
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+  </div>
+  </nav>
+  </div>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <% @data["accounts"].each do |account| %>
+            <li class="tab col s3"><a href="#<%= account['name'] %>"><%= account['name'] %></a></li>
+            <% end %>
+          </ul>
+        </div>
+        <% @data["accounts"].each do |account| %>
+        <div id="<%= account['name'] %>" class="col s12">
+          <h3><a href="/distributions">Distributions</a></h3>
+          <table>
+            <th>Envelope</th>
+            <th>Amount</th>
+            <% @data["distributions"].each do |distribution| %>
+              <% if distribution["account_id"] == account['id'] %>
+              <tr>
+                <td><%= distribution.envelope["name"] %></td>
+                <td><%= distribution.amount %></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </table>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+  <script src="js/init.js"></script>
+  <script>
+    //Initialize the modals
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      $('.modal-trigger').leanModal();
+      
+      $('.datepicker').pickadate({
+        selectMonths: false, // Creates a dropdown to control month
+        selectYears: 1 // Creates a dropdown of 15 years to control year
+      });
+      
+      $('#switch').change(function() {
+        $('.occupied').toggle('slow');
+      });
+      $('.collapsible').collapsible({
+        accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+      $('select').material_select();
+
+      $('.tooltipped').tooltip({delay: 50});
+
+      $('#table_id').DataTable();
+    });
+  </script>
+  </body>
+</html>

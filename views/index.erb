@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"/>
+</head>
+<body>
+  <div class="navbar-fixed">
+	<nav class="light-blue lighten-1" role="navigation">
+	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Budge It</a>
+	  <ul class="right hide-on-med-and-down">
+      <li><a href="#">Dashboard</a></li>
+	    <li><a href="#">Income Sources</a></li>
+      <li><a href="#">Accounts</a></li>
+      <li><a href="#">Envelopes</a></li>
+	  </ul>
+
+	  <ul id="nav-mobile" class="side-nav">
+	    <li><a href="#">Navbar Link</a></li>
+	  </ul>
+	  <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+	</div>
+	</nav>
+  </div>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Hacker News</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+      </div>
+      <div class="row center">
+        <a href="/envelope/create" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <form id="create_envelope_form" action="/envelope/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <input name="envelope[name]" id="envelope_name" type="text" class="validate">
+                <label for="envelope[name]">Name</label>
+              </div>
+              <div class="input-field col s6">
+                <input name="envelope[balance]" id="envelope_balance" type="text" class="validate">
+                <label for="envelope[balance]">Balance</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_envelope_submit" class="waves-effect waves-light btn">Create Envelope</a>
+          <script>
+            document.getElementById('create_envelope_submit').onclick = function() {
+              document.getElementById('create_envelope_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <form id="create_account_form" action="/account/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <input name="account[name]" id="account_name" type="text" class="validate">
+                <label for="account[name]">Name</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_account_submit" class="waves-effect waves-light btn">Create Account</a>
+          <script>
+            document.getElementById('create_account_submit').onclick = function() {
+              document.getElementById('create_account_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <form id="create_allocation_form" action="/allocation/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <select name="allocation[source]">
+                  <option value="" selected>Select a Source</option>
+                  <% @sources.each do |source| %>
+                  <option value="<%= source["id"] %>"><%= source["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Source</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="allocation[account]">
+                  <option value="" selected>Select an Account</option>
+                  <% @accounts.each do |account| %>
+                  <option value="<%= account["id"] %>"><%= account["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Account</label>
+              </div>
+              <div class="input-field col s4">
+                <input name="allocation[amount]" id="allocation_amount" type="text" class="validate">
+                <label for="allocation[amount]">Amount</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_allocation_submit" class="waves-effect waves-light btn">Create Allocation</a>
+          <script>
+            document.getElementById('create_allocation_submit').onclick = function() {
+              document.getElementById('create_allocation_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <form id="create_distribution_form" action="/distribution/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <select name="distribution[account]">
+                  <option value="" selected>Select an Account</option>
+                  <% @accounts.each do |account| %>
+                  <option value="<%= account["id"] %>"><%= account["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Account</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="distribution[envelope]">
+                  <option value="" selected>Select an Envelope</option>
+                  <% @envelopes.each do |envelope| %>
+                  <option value="<%= envelope["id"] %>"><%= envelope["name"] %></option>
+                  <% end %>
+                </select>
+                <label>Envelope</label>
+              </div>
+              <div class="input-field col s4">
+                <input name="distribution[amount]" id="distribution_amount" type="text" class="validate">
+                <label for="distribution[amount]">Amount</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_distribution_submit" class="waves-effect waves-light btn">Create Distribution</a>
+          <script>
+            document.getElementById('create_distribution_submit').onclick = function() {
+              document.getElementById('create_distribution_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <form id="create_source_form" action="/source/create" method="POST" class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <input name="source[name]" id="source_name" type="text" class="validate">
+                <label for="source[name]">Name</label>
+              </div>
+              <div class="input-field col s6">
+                <input name="source[amount]" id="source_amount" type="text" class="validate">
+                <label for="source[amount]">Amount</label>
+              </div>
+            </div>
+          </form>
+          <a id="create_source_submit" class="waves-effect waves-light btn">Create Income Source</a>
+          <script>
+            document.getElementById('create_source_submit').onclick = function() {
+              document.getElementById('create_source_form').submit();
+            }
+          </script>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/envelopes">Envelopes</a></h3>
+          <ul class="collection">
+           <% @envelopes.each do |envelope| %>
+            <li class="collection-item" id="envelope<%= envelope["id"] %>">
+              <h5 class="title"><a href='#' target="_blank"><%= envelope["name"] %> <%= envelope["id"] %></a><span class="badge"><a href="#!" class="secondary-content"> <%= envelope["balance"] %><i class="mdi-communication-message"></i> <a href='/envelope/delete/<%= envelope["name"] %>'><i class="mdi-communication-message"></i></a></span></a></h5>
+              <p><i class="mdi-social-person"></i> <i class="mdi-action-thumb-up"></i></p>
+            </li>
+           <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/accounts">Accounts</a></h3>
+          <ul class="collection">
+           <% @accounts.each do |account| %>
+            <li class="collection-item" id="account<%= account["id"] %>">
+              <h5 class="title"><a href='#' target="_blank"><%= account["name"] %> <%= account["id"] %></a><span class="badge"><a href="#!" class="secondary-content"><i class="mdi-communication-message"></i></span></a></h5>
+              <p><i class="mdi-social-person"></i> <i class="mdi-action-thumb-up"></i></p>
+            </li>
+           <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/sources">Sources</a></h3>
+          <ul class="collection">
+           <% @sources.each do |source| %>
+            <li class="collection-item" id="source<%= source["id"] %>">
+              <h5 class="title"><a href='#' target="_blank"><%= source["name"] %> <%= source["id"] %></a><span class="badge"><a href="#!" class="secondary-content"><i class="mdi-communication-message"></i></span></a></h5>
+              <ul>
+                <%# source.allocations.each do |allocation| %>
+                <li><%#= allocation["name"] %></li>
+                <%# end %>
+              </ul>
+              <p><i class="mdi-social-person"></i> <i class="mdi-action-thumb-up"></i></p>
+            </li>
+           <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/allocations">Allocations</a></h3>
+          <table>
+            <th>Source</th>
+            <th>Account</th>
+            <th>Amount</th>
+            <% @allocations.each do |allocation| %>
+            <tr>
+              <td><%= allocation.source["name"] %></td>
+              <td><%= allocation.account["name"] %></td>
+              <td><%= allocation.amount %></td>
+            </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/distributions">Distributions</a></h3>
+          <table>
+            <th>Account</th>
+            <th>Envelope</th>
+            <th>Amount</th>
+            <% @distributions.each do |distribution| %>
+            <tr>
+              <td><%= distribution.account["name"] %></td>
+              <td><%= distribution.envelope["name"] %></td>
+              <td><%= distribution.amount %></td>
+            </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <h3><a href="/">Everything</a></h3>
+          <ul class="collapsible" data-collapsible="accordion">
+            <% @sources.each do |source| %>
+            <li>
+              <div class="collapsible-header">
+                <i class="mdi-maps-local-atm"></i><%= source["name"] %>
+                <span class="right"><%= source["amount"] %></span>
+              </div>
+              <% @allocations.each do |allocation| %>
+                <% if allocation.source["id"] == source["id"] %>
+                  <div class="collapsible-body">
+                    <ul class="collapsible level-2" data-collapsible="accordion">
+                      <li>
+                        <div class="collapsible-header level-2">
+                          <i class="mdi-action-account-balance"></i> <%= allocation.account["name"] %>
+                          <span class="right">$<%= allocation.amount %></span>
+                        </div>
+                        <div class="collapsible-body no-bottom-border">
+                          <ul class="collapsible level-3" data-collapsible="accordion">
+                            <% @distributions.each do |distribution| %>
+                              <% if distribution.account["id"] == allocation.account["id"] %>
+                                <li>
+                                  <div class="collapsible-header level-3">
+                                    <i class="mdi-content-mail"></i> <%= distribution.envelope["name"] %>
+                                    <span class="right"><%= distribution.amount %></span>
+                                  </div>
+                                </li>
+                              <% end %>
+                            <% end %>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                <% end %>
+              <% end %>
+            </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+    <div class="section">
+    	<div class="row">
+    		<div class="col s12">
+		    	<ul class="pagination">
+				    <li class="disabled"><a href="#!"><i class="mdi-navigation-chevron-left"></i></a></li>
+				    <li class="active"><a href="/1">1</a></li>
+				    <li class="waves-effect"><a href="/2">2</a></li>
+				    <li class="waves-effect"><a href="/3">3</a></li>
+				    <li class="waves-effect"><a href="/4">4</a></li>
+				    <li class="waves-effect"><a href="#!"><i class="mdi-navigation-chevron-right"></i></a></li>
+			    </ul>
+			</div>
+    	</div>
+    </div>
+
+    <br><br>
+
+    <div class="section">
+
+    </div>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+  <script src="js/init.js"></script>
+  <script>
+    //Initialize the modals
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      $('.modal-trigger').leanModal();
+      
+      $('.datepicker').pickadate({
+        selectMonths: false, // Creates a dropdown to control month
+        selectYears: 1 // Creates a dropdown of 15 years to control year
+      });
+      
+      $('#switch').change(function() {
+        $('.occupied').toggle('slow');
+      });
+      $('.collapsible').collapsible({
+        accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+      $('select').material_select();
+
+      $('.tooltipped').tooltip({delay: 50});
+
+      $('#table_id').DataTable();
+    });
+  </script>
+  </body>
+</html>
