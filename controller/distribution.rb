@@ -1,3 +1,32 @@
+
+# ROUTES 
+
+get '/distributions' do
+	@accounts = Account.all
+	@envelopes = Envelope.all
+	@distributions = Distribution.all
+	@deleted = params['deleted']
+	erb :distributions
+end
+
+post '/distribution/create' do
+	distribution = params[:distribution]
+	distribution = create_distribution distribution['account'], distribution['envelope'], distribution['amount'].to_f
+	redirect '/'
+end
+
+post '/distribution/delete' do
+	distribution = params[:distribution]
+	success = delete_distribution distribution['id']
+	if success == true
+		redirect '/distributions?deleted=true'
+	else
+		redirect '/distributions?deleted=false'
+	end
+end
+
+# FUNCTIONS
+
 def create_distribution (account, envelope, amount)
 	distribution = Distribution.create(
 		:account_id => account,
