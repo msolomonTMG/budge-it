@@ -6,6 +6,6 @@ class Distribution
 	property :id, Serial
 	property :amount, Float
 
-	belongs_to :account#,	:key => true
-	belongs_to :envelope#, 	:key => true
+	belongs_to :account
+	belongs_to :envelope
 end

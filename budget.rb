@@ -27,6 +27,15 @@ get '/' do
 	erb :index#, :locals => {:envelopes => envelopes}
 end
 
+get '/test2' do
+	@envelopes = Envelope.all(:order => [:name.asc])
+	@accounts = Account.all(:order => [:name.asc])
+	@sources = Source.all(:order => [:name.asc])
+	@allocations = Allocation.all
+	@distributions = Distribution.all
+	erb :test_data_table
+end
+
 get '/dashboard' do
 	envelopes = Envelope.all(:order => [:name.asc])
 	accounts = Account.all(:order => [:name.asc])

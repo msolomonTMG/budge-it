@@ -5,7 +5,7 @@ class Allocation
 	property :id, Serial
 	property :amount, Float
 
-	belongs_to :account#,	:key => true
-	belongs_to :source#, 	:key => true
+	belongs_to :account
+	belongs_to :source
 
 end
