@@ -7,6 +7,7 @@ require 'sinatra'
 require 'data_mapper'
 require 'json'
 require 'rest-client'
+require './helpers.rb'
 
 #require models
 Dir[File.dirname(__FILE__) + '/model/*.rb'].each {|file| require file }
@@ -25,6 +26,15 @@ get '/' do
 	@allocations = Allocation.all
 	@distributions = Distribution.all
 	erb :index#, :locals => {:envelopes => envelopes}
+end
+
+get '/settings' do
+	@envelopes = Envelope.all(:order => [:name.asc])
+	@accounts = Account.all(:order => [:name.asc])
+	@sources = Source.all(:order => [:name.asc])
+	@allocations = Allocation.all
+	@distributions = Distribution.all
+	erb :settings
 end
 
 get '/test2' do

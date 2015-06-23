@@ -9,23 +9,30 @@
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <div class="navbar-fixed">
   <nav class="light-blue lighten-1" role="navigation">
   <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Budge It</a>
     <ul class="right hide-on-med-and-down">
-      <li><a href="/dashboard">Dashboard</a></li>
-      <li><a href="/sources">Income Sources</a></li>
-      <li><a href="/accounts">Accounts</a></li>
-      <li><a href="/distributions">Envelopes</a></li>
+      <li class=<%= "active" if active_page?("dashboard") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Dashboard" href="/dashboard"><i class="mdi-action-dashboard"></i></a></li>
+      <li class=<%= "active" if active_page?("reports") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Reports" href="/reports"><i class="material-icons">trending_up</i></a></li>
+      <li class=<%= "active" if active_page?("settings") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Settings" href="/settings"><i class="material-icons">settings</i></a></li>
+      <li class=<%= "active" if active_page?("sources") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Income Sources" href="/sources"><i class="mdi-maps-local-atm"></i></a></li>
+      <li class=<%= "active" if active_page?("acounts") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Accounts" href="/accounts"><i class="mdi-action-account-balance"></i></a></li>
+      <li class=<%= "active" if active_page?("distributions") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Envelopes" href="/distributions"><i class="mdi-communication-email"></i></a></li>
+      <li class=<%= "active" if active_page?("profile") %> ><a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Profile" href="/profile"><i class="mdi-action-account-circle"></i></a></li>
     </ul>
 
     <ul id="nav-mobile" class="side-nav">
-      <li><a href="/dashboard">Dashboard</a></li>
-      <li><a href="/sources">Income Sources</a></li>
-      <li><a href="/accounts">Accounts</a></li>
-      <li><a href="/distributions">Envelopes</a></li>
+      <li class=<%= "active" if active_page?("dashboard") %> ><a href="/dashboard"><i class="mdi-action-dashboard left"></i> Dashboard</a></li>
+      <li class=<%= "active" if active_page?("reports") %> ><a href="/reports"><i class="material-icons left">trending_up</i> Reports</a></li>
+      <li class=<%= "active" if active_page?("settings") %> ><a href="/settings"><i class="material-icons left">settings</i> Settings</a></li>
+      <li class=<%= "active" if active_page?("sources") %> ><a href="/sources"><i class="mdi-maps-local-atm left"></i> Income Sources</a></li>
+      <li class=<%= "active" if active_page?("acounts") %> ><a href="/accounts"><i class="mdi-action-account-balance left"></i> Accounts</a></li>
+      <li class=<%= "active" if active_page?("distributions") %> ><a href="/distributions"><i class="mdi-communication-email left"></i> Envelopes</a>
+      <li class=<%= "active" if active_page?("profile") %> ><a href="/profile"><i class="mdi-action-account-circle left"></i> Profile</a></li></li>
     </ul>
     <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
   </div>
@@ -98,7 +105,7 @@
       $('table.display').DataTable( {
               "order": [[ 1, "asc" ]],
               "paging":   false,
-              "footerCallback": function ( row, data, start, end, display ) {
+              /*"footerCallback": function ( row, data, start, end, display ) {
                   var api = this.api(), data;
                   // Remove the formatting to get integer data for summation
                   var intVal = function ( i ) {
@@ -128,7 +135,7 @@
                   $( api.column( 2 ).footer() ).html(
                       '$'+pageTotal +' ( $'+ total +' total)'
                   );
-                }
+                }*/
             });
     });
   </script>
